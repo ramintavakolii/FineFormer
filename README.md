@@ -204,8 +204,16 @@ This cyclic exposure enables the encoder to learn increasingly **general and tas
 **Best-performing values per task and metric are shown in bold.**
 
 ### Table 1. Performance of Transformer-Based Models (Iteration 2)
-
-*(Table unchanged — visually clean and publication-ready)*
+| Model | Task | ACC | Sens | Spec | NPV | AUC | Prec | F1 | | ------------------ | ---- | --------- | --------- | --------- | --------- | --------- | --------- | --------- | 
+| Time-Transformer | HS | **0.884** | 0.833 | **0.928** | **0.911** | 0.860 | **0.911** | 0.870 | 
+| Region-Transformer | HS | 0.780 | 0.742 | 0.814 | 0.789 | 0.737 | 0.787 | 0.756 | 
+| Hybrid-Transformer | HS | **0.884** | **0.867** | 0.900 | 0.888 | **0.881** | 0.888 | **0.874** | 
+| Time-Transformer | HB | **0.900** | 0.698 | **0.971** | 0.903 | 0.784 | 0.898 | 0.773 | 
+| Region-Transformer | HB | 0.857 | 0.573 | 0.957 | 0.867 | 0.756 | 0.867 | 0.663 | | 
+Hybrid-Transformer | HB | 0.899 | **0.738** | 0.957 | **0.914** | **0.820** | **0.900** | **0.790** | 
+| Time-Transformer | BS | **0.923** | **1.000** | 0.739 | **1.000** | 0.850 | 0.904 | **0.950** | 
+| Region-Transformer | BS | 0.870 | 0.983 | 0.591 | 0.949 | 0.718 | 0.858 | 0.916 | 
+| Hybrid-Transformer | BS | 0.911 | 0.942 | **0.839** | 0.862 | **0.854** | **0.936** | 0.938 |
 
 ---
 
@@ -238,22 +246,6 @@ The repository includes:
 * Attention weight files
 
 All experiments are fully reproducible given identical preprocessing and fold definitions.
-
----
-
-## 🧰 Tools & Dependencies
-
-This project is implemented using the following core libraries and tools:
-
-- **Python ≥ 3.8**
-- **PyTorch** for deep learning and Transformer models
-- **NumPy / SciPy** for numerical computation
-- **scikit-learn** for evaluation metrics and cross-validation
-- **Nilearn** for neuroimaging data handling
-- **CUDA** (optional) for GPU acceleration
-
-Exact package versions are provided in `requirements.txt` to ensure full reproducibility.
-
 
 ---
 
