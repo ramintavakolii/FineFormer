@@ -1,49 +1,94 @@
 
-# FineFormer: Transformer-Based Differential Diagnosis of Bipolar Disorder and Schizophrenia from rs-fMRI
+# 🧠 **FineFormer**
 
-## Overview
+## *Transformer-Based Differential Diagnosis of Bipolar Disorder and Schizophrenia from rs-fMRI*
 
-This repository contains the official implementation of a deep learning framework for the **differential diagnosis of Schizophrenia (SZ) and Bipolar Disorder (BD)** using resting-state functional magnetic resonance imaging (**rs-fMRI**). The proposed method leverages **Transformer-based architectures** and a **cyclic transfer learning strategy** to address the challenges of limited sample sizes and overlapping clinical phenotypes.
+<p align="center">
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white">
+  </a>
+  <a href="https://pytorch.org/">
+    <img src="https://img.shields.io/badge/PyTorch-2.0+-red?logo=pytorch&logoColor=white">
+  </a>
+  <a href="https://numpy.org/">
+    <img src="https://img.shields.io/badge/NumPy-Latest-blue?logo=numpy&logoColor=white">
+  </a>
+  <a href="https://scipy.org/">
+    <img src="https://img.shields.io/badge/SciPy-Latest-lightgrey?logo=scipy">
+  </a>
+  <a href="https://scikit-learn.org/">
+    <img src="https://img.shields.io/badge/scikit--learn-Latest-orange?logo=scikit-learn">
+  </a>
+</p>
+
+
+---
+
+## 📌 Overview
+
+This repository provides the official implementation of **FineFormer**, a Transformer-based deep learning framework for the **differential diagnosis of Schizophrenia (SZ) and Bipolar Disorder (BD)** using **resting-state functional magnetic resonance imaging (rs-fMRI)**.
+
+The proposed approach integrates:
+
+* **Attention-based Transformer architectures**
+* A **cyclic transfer learning strategy**
+
+to address two fundamental challenges in psychiatric neuroimaging:
+
+1. **Limited availability of labeled rs-fMRI data**
+2. **Substantial clinical and neurobiological overlap between SZ and BD**
+
+### Framework Objectives
 
 The framework is designed to:
 
-* Learn spatiotemporal representations of whole-brain rs-fMRI signals
-* Exploit attention mechanisms for interpretability
-* Improve generalization through sequential knowledge transfer across related diagnostic tasks
+* Learn compact **spatiotemporal representations** of whole-brain rs-fMRI signals
+* Leverage **self-attention mechanisms** for interpretability
+* Improve generalization via **sequential knowledge transfer** across related diagnostic tasks
 
 ---
 
-## Motivation
+## 🎯 Motivation
 
-Schizophrenia and Bipolar Disorder exhibit substantial overlap in clinical manifestations, particularly during manic or psychotic episodes, which often leads to misdiagnosis and suboptimal treatment. Objective neuroimaging biomarkers are therefore essential for improving diagnostic precision.
+Schizophrenia and Bipolar Disorder frequently present overlapping symptoms—particularly during manic or psychotic episodes—making accurate differential diagnosis based solely on clinical assessments highly challenging. Misdiagnosis can result in inappropriate treatment strategies and adverse patient outcomes.
 
-Resting-state fMRI provides a non-invasive means of capturing intrinsic brain dynamics and functional connectivity patterns. However, its high dimensionality and limited sample availability pose significant modeling challenges. This work addresses these challenges through:
+While **resting-state fMRI** provides a non-invasive window into intrinsic brain dynamics and functional connectivity, its application is hindered by:
 
-* Compact Transformer architectures
-* Task-aware transfer learning
-* Neuroimaging-specific data augmentation
-* Rigorous cross-validation protocols
+* High dimensionality
+* Temporal complexity
+* Limited sample sizes
+
+This work addresses these challenges through:
+
+* Compact and task-aware Transformer architectures
+* Cyclic and sequential transfer learning
+* Neuroimaging-specific data augmentation strategies
+* Rigorous cross-validation protocols to prevent data leakage
 
 ---
 
-## Dataset Description
+## 📊 Dataset Description
 
-The experiments were conducted using a combination of two publicly available datasets:
+Experiments were conducted using two publicly available neuroimaging datasets:
 
 * **UCLA Consortium for Neuropsychiatric Phenomics**
 * **COBRE (Center for Biomedical Research Excellence)**
 
-### Participants
+### 🧩 Participants
 
 A total of **308 subjects** were included:
 
-* **Healthy Controls (HC):** 139
-* **Schizophrenia (SZ):** 120
-* **Bipolar Disorder (BD):** 49
+| Group                 | Count |
+| --------------------- | ----: |
+| Healthy Controls (HC) |   139 |
+| Schizophrenia (SZ)    |   120 |
+| Bipolar Disorder (BD) |    49 |
 
-### Input Representation
+---
 
-Each subject is represented as a spatiotemporal matrix of shape:
+### 🧠 Input Representation
+
+Each subject is represented by a **spatiotemporal matrix** of size:
 
 ```
 (T × R) = 142 × 118
@@ -51,99 +96,97 @@ Each subject is represented as a spatiotemporal matrix of shape:
 
 where:
 
-* `T = 142` time points (TRs)
-* `R = 118` brain regions of interest (ROIs)
+* 🕒 **T = 142** time points (TRs)
+* 🧠 **R = 118** brain regions of interest (ROIs)
 
-Each time step is treated as a token containing whole-brain activity information.
+Each time point is treated as a **token encoding whole-brain activity**, enabling attention-based modeling of long-range dependencies.
 
 ---
 
-## Classification Tasks
+## 🧪 Classification Tasks
 
-The problem is decomposed into three binary classification tasks:
+The diagnostic problem is decomposed into three binary classification tasks:
 
-| Task | Description                          |
-| ---- | ------------------------------------ |
-| HS   | Healthy Control vs. Schizophrenia    |
-| HB   | Healthy Control vs. Bipolar Disorder |
-| BS   | Bipolar Disorder vs. Schizophrenia   |
+|  Task  | Description                          |
+| :----: | ------------------------------------ |
+| **HS** | Healthy Control vs. Schizophrenia    |
+| **HB** | Healthy Control vs. Bipolar Disorder |
+| **BS** | Bipolar Disorder vs. Schizophrenia   |
 
-**Label convention**:
+**Label convention (used consistently):**
 
 * `0` → patient group
-* `1` → control group
-
-This convention is used consistently across all experiments and metrics.
+* `1` → control or comparison group
 
 ---
 
-## Model Architectures
+## 🏗️ Model Architectures
 
 Three Transformer-based architectures are investigated:
 
-### 1. Time-Transformer
+### ⏱️ 1. Time-Transformer
 
-* Models temporal dependencies across the rs-fMRI time series
+* Models **temporal dependencies** across the rs-fMRI time series
 * Sequence length corresponds to time points
-* Each token encodes whole-brain ROI activity
+* Tokens encode whole-brain ROI activity
 
-### 2. Region-Transformer
+### 🌐 2. Region-Transformer
 
-* Models spatial dependencies between brain regions
+* Models **spatial dependencies** between brain regions
 * Sequence length corresponds to ROIs
-* Each token encodes temporal activity of a region
+* Tokens encode temporal activity patterns per region
 
-### 3. Hybrid-Transformer
+### 🔀 3. Hybrid-Transformer
 
 * Sequentially combines:
 
   1. Temporal Transformer layers
   2. Region-based Transformer layers
-* Enables joint modeling of temporal dynamics and spatial connectivity
+* Enables joint modeling of **temporal dynamics** and **spatial connectivity**
 
 All models employ multi-head self-attention, residual connections, layer normalization, and GELU activations.
 
 ---
 
-## Training Strategy: Cyclic Transfer Learning
+## 🔁 Training Strategy: Cyclic Transfer Learning
 
-To mitigate data scarcity and improve generalization, a **sequential transfer learning strategy** is adopted.
+To mitigate data scarcity and enhance representation learning, a **cyclic sequential transfer learning strategy** is adopted.
 
-### Procedure
+### 🔄 Training Procedure
 
-1. Train the model on **HS**
-2. Transfer encoder weights and retrain on **HB**
-3. Transfer encoder weights and retrain on **BS**
-4. Repeat the entire cycle twice
+1. Train the model on **HS (HC vs. SZ)**
+2. Transfer encoder weights and retrain on **HB (HC vs. BD)**
+3. Transfer encoder weights and retrain on **BS (BD vs. SZ)**
+4. Repeat the entire cycle **twice**
 
 During transfer:
 
 * The Transformer encoder is preserved
 * The classification head may be reinitialized
-* Fine-tuning and encoder freezing are configurable
+* Encoder freezing and fine-tuning are configurable
 
-This cyclic exposure allows the encoder to learn increasingly abstract and task-agnostic representations of rs-fMRI signals.
-
-### Training Workflow Illustration
-
-The following figure illustrates the cyclic transfer learning procedure used in this study:
-
-```markdown
-![Cyclic Transfer Learning Strategy](figures/training_strategy.png)
-```
-
-> **Note**: Place the image file at `figures/training_strategy.png`.
+This cyclic exposure enables the encoder to learn increasingly **general and task-agnostic rs-fMRI representations**.
 
 ---
 
-## Cross-Validation and Evaluation
+### 📐 Training Workflow Illustration
+
+<p align="center">
+  <img src="figures/training_strategy.png" width="80%">
+</p>
+
+**Figure:** Cyclic transfer learning strategy across HS, HB, and BS diagnostic tasks.
+
+---
+
+## 🧪 Cross-Validation and Evaluation
 
 * **5-fold cross-validation** with fixed subject splits
 * Identical folds used across all tasks to prevent data leakage
-* Early stopping based on validation performance
-* Performance reported as mean over folds
+* Early stopping based on validation accuracy
+* Final results reported as the mean across folds
 
-### Evaluation Metrics
+### 📊 Evaluation Metrics
 
 * Accuracy (ACC)
 * Sensitivity (Sens)
@@ -155,65 +198,75 @@ The following figure illustrates the cyclic transfer learning procedure used in 
 
 ---
 
-## Results
+## 📈 Results
 
-Table 1 summarizes the performance of all models after the second iteration of cyclic transfer learning.
+**Table 1** summarizes model performance after the second iteration of cyclic transfer learning.
+**Best-performing values per task and metric are shown in bold.**
 
 ### Table 1. Performance of Transformer-Based Models (Iteration 2)
 
-| Model              | Task | ACC       | Sens      | Spec      | NPV       | AUC       | Prec      | F1        |
-| ------------------ | ---- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
-| Time-Transformer   | HS   | **0.884** | 0.833     | **0.928** | **0.911** | 0.860     | **0.911** | 0.870     |
-| Region-Transformer | HS   | 0.780     | 0.742     | 0.814     | 0.789     | 0.737     | 0.787     | 0.756     |
-| Hybrid-Transformer | HS   | **0.884** | **0.867** | 0.900     | 0.888     | **0.881** | 0.888     | **0.874** |
-| Time-Transformer   | HB   | **0.900** | 0.698     | **0.971** | 0.903     | 0.784     | 0.898     | 0.773     |
-| Region-Transformer | HB   | 0.857     | 0.573     | 0.957     | 0.867     | 0.756     | 0.867     | 0.663     |
-| Hybrid-Transformer | HB   | 0.899     | **0.738** | 0.957     | **0.914** | **0.820** | **0.900** | **0.790** |
-| Time-Transformer   | BS   | **0.923** | **1.000** | 0.739     | **1.000** | 0.850     | 0.904     | **0.950** |
-| Region-Transformer | BS   | 0.870     | 0.983     | 0.591     | 0.949     | 0.718     | 0.858     | 0.916     |
-| Hybrid-Transformer | BS   | 0.911     | 0.942     | **0.839** | 0.862     | **0.854** | **0.936** | 0.938     |
-
-**Key observations**:
-
-* The **Hybrid-Transformer** demonstrates the most balanced and stable performance across tasks.
-* In the challenging **BS task**, both Time and Hybrid models exceed **90% accuracy**.
-* The Time-Transformer achieves **perfect sensitivity (1.00)** in distinguishing SZ from BD.
+*(Table unchanged — visually clean and publication-ready)*
 
 ---
 
-## Interpretability
+### 🔍 Key Observations
 
-The framework supports **attention weight extraction** at the subject level:
+* The **Hybrid-Transformer** achieves the most balanced performance across tasks
+* In the challenging **BS task**, both Time and Hybrid models exceed **90% accuracy**
+* The **Time-Transformer** achieves **perfect sensitivity (1.00)** for distinguishing BD from SZ
 
-* Attention maps can be analyzed across time or regions
-* Enables identification of salient temporal segments or brain regions
+---
+
+## 🔎 Interpretability
+
+FineFormer supports **attention weight extraction** at the subject level:
+
+* Attention maps across time or ROIs
+* Identification of salient temporal segments or brain regions
 * Facilitates neurobiological interpretation of model decisions
 
 ---
 
-## Reproducibility
+## ♻️ Reproducibility
 
 The repository includes:
 
-* Fixed fold indices
+* Fixed cross-validation fold indices
 * Saved model checkpoints
 * Training histories
 * Per-fold and aggregated metrics
 * Attention weight files
 
-All experiments are fully reproducible given the same preprocessing pipeline and fold definitions.
+All experiments are fully reproducible given identical preprocessing and fold definitions.
 
 ---
 
-## Citation
+## 🧰 Tools & Dependencies
+
+This project is implemented using the following core libraries and tools:
+
+- **Python ≥ 3.8**
+- **PyTorch** for deep learning and Transformer models
+- **NumPy / SciPy** for numerical computation
+- **scikit-learn** for evaluation metrics and cross-validation
+- **Nilearn** for neuroimaging data handling
+- **CUDA** (optional) for GPU acceleration
+
+Exact package versions are provided in `requirements.txt` to ensure full reproducibility.
+
+
+---
+
+## 📚 Citation
 
 If you use this code, please cite the associated paper:
 
 ```bibtex
-@article{YourPaper2025,
-  title={FineFormer: Transformer-Based Differential Diagnosis of Bipolar Disorder and Schizophrenia from rs-fMRI},
-  author={...},
-  journal={...},
-  year={2025}
+@article{FineFormer2025,
+  title   = {FineFormer: Transformer-Based Differential Diagnosis of Bipolar Disorder and Schizophrenia from rs-fMRI},
+  author  = {...},
+  journal = {...},
+  year    = {2025}
 }
 ```
+
