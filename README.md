@@ -5,6 +5,25 @@
 
 ## *Transformer-Based Differential Diagnosis of Bipolar Disorder and Schizophrenia from rs-fMRI*
 
+<p align="center">
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white">
+  </a>
+  <a href="https://pytorch.org/">
+    <img src="https://img.shields.io/badge/PyTorch-2.0+-red?logo=pytorch&logoColor=white">
+  </a>
+  <a href="https://numpy.org/">
+    <img src="https://img.shields.io/badge/NumPy-Latest-blue?logo=numpy&logoColor=white">
+  </a>
+  <a href="https://scipy.org/">
+    <img src="https://img.shields.io/badge/SciPy-Latest-lightgrey?logo=scipy">
+  </a>
+  <a href="https://scikit-learn.org/">
+    <img src="https://img.shields.io/badge/scikit--learn-Latest-orange?logo=scikit-learn">
+  </a>
+</p>
+
+
 ---
 
 ## 📌 Overview
