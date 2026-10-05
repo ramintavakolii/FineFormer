@@ -1,0 +1,118 @@
+# @package cycle
+# Region Transformer — Cycle 2 (old-code/region/{HS,HB,BS}_Project2.txt)
+
+cycle: 2
+
+tasks:
+  HS:
+    # Active grid from HS_Project2.ipynb cell 45
+    search:
+      learning_rate: [2.0e-4, 4.0e-4, 6.0e-4, 8.0e-4, 9.0e-4, 1.0e-3, 2.0e-3]
+      dropout: [0.10, 0.14, 0.18]
+      weight_decay: [0.01]
+    # Transfer cell 44: lr=9e-5, dropout=0.3, wd=1e-2, scheduler_factor=0.3
+    training:
+      learning_rate: 9.0e-5
+      dropout: 0.3
+      weight_decay: 0.01
+      batch_size: 16
+      num_epochs: 250
+      patience: 30
+      warmup_epochs: 0
+      scheduler_factor: 0.3
+      fine_tune: true
+      reinit_classifier: true
+      freeze_encoder: false
+      fold_id_base: 1
+    augmentation:
+      train_aug_kwargs:
+        noise_std: 0.3
+        time_mask_ratio: 0.35
+        temporal_dropout_ratio: 0.35
+        feature_mask_ratio: 0.35
+        jitter_max_shift: 10
+        amp_scale_range: [0.9, 1.1]
+        smooth_kernel_size: 3
+      apply_aug_probs:
+        p_gaussian_noise: 0.3
+        p_time_mask: 0.2
+        p_temporal_dropout: 0.2
+        p_feature_mask: 0.1
+        p_time_jitter: 0.2
+        p_amplitude_scale: 0.2
+        p_smooth_signal: 0.1
+
+  HB:
+    # Active grid from HB_Project2.ipynb cell 45
+    search:
+      learning_rate: [8.0e-5, 9.0e-5, 1.0e-4, 3.0e-4, 5.0e-4, 7.0e-4, 9.0e-4, 1.0e-3]
+      dropout: [0.05, 0.08, 0.12, 0.18, 0.10, 0.14, 0.18]
+      weight_decay: [0.05]
+    # Transfer cell 44: lr=9e-4, dropout=0.3, wd=1e-2, scheduler_factor=0.3
+    training:
+      learning_rate: 9.0e-4
+      dropout: 0.3
+      weight_decay: 0.01
+      batch_size: 16
+      num_epochs: 250
+      patience: 30
+      warmup_epochs: 0
+      scheduler_factor: 0.3
+      fine_tune: true
+      reinit_classifier: true
+      freeze_encoder: false
+      fold_id_base: 1
+    augmentation:
+      train_aug_kwargs:
+        noise_std: 0.3
+        time_mask_ratio: 0.35
+        temporal_dropout_ratio: 0.35
+        feature_mask_ratio: 0.35
+        jitter_max_shift: 10
+        amp_scale_range: [0.9, 1.1]
+        smooth_kernel_size: 3
+      apply_aug_probs:
+        p_gaussian_noise: 0.3
+        p_time_mask: 0.2
+        p_temporal_dropout: 0.2
+        p_feature_mask: 0.1
+        p_time_jitter: 0.2
+        p_amplitude_scale: 0.2
+        p_smooth_signal: 0.1
+
+  BS:
+    # Active grid from BS_Project2.ipynb cell 45
+    search:
+      learning_rate: [7.0e-6, 1.5e-5, 2.5e-5, 4.0e-5, 6.0e-5, 1.5e-4, 2.5e-4, 4.0e-4, 8.0e-4]
+      dropout: [0.10, 0.14, 0.18]
+      weight_decay: [0.05]
+    training:
+      learning_rate: 1.5e-4
+      dropout: 0.10
+      weight_decay: 0.05
+      batch_size: 16
+      num_epochs: 250
+      patience: 30
+      warmup_epochs: 0
+      scheduler_factor: 0.5
+      fine_tune: true
+      reinit_classifier: true
+      freeze_encoder: false
+      fold_id_base: 1
+    augmentation:
+      train_aug_kwargs:
+        noise_std: 0.3
+        time_mask_ratio: 0.35
+        temporal_dropout_ratio: 0.35
+        feature_mask_ratio: 0.35
+        jitter_max_shift: 10
+        amp_scale_range: [0.9, 1.1]
+        smooth_kernel_size: 3
+      apply_aug_probs:
+        p_gaussian_noise: 0.3
+        p_time_mask: 0.2
+        p_temporal_dropout: 0.2
+        p_feature_mask: 0.1
+        p_time_jitter: 0.2
+        p_amplitude_scale: 0.2
+        p_smooth_signal: 0.1

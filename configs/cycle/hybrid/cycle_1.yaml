@@ -1,0 +1,110 @@
+cycle: 1
+
+tasks:
+  HS:
+    search:
+      learning_rate: [2.0e-4, 4.0e-4, 1.0e-4, 8.0e-4, 9.0e-4, 1.0e-3]
+      dropout: [0.15, 0.18, 0.22, 0.37, 0.27, 0.32, 0.42]
+      weight_decay: [0.1]
+    training:
+      learning_rate: 1.0e-4
+      dropout: 0.2
+      weight_decay: 1.0
+      batch_size: 16
+      num_epochs: 250
+      patience: 30
+      warmup_epochs: 0
+      scheduler_factor: 0.5
+      fine_tune: false
+      reinit_classifier: false
+      freeze_encoder: false
+      fold_id_base: 1
+    augmentation:
+      train_aug_kwargs:
+        noise_std: 0.5
+        time_mask_ratio: 0.55
+        temporal_dropout_ratio: 0.55
+        feature_mask_ratio: 0.55
+        jitter_max_shift: 12
+        amp_scale_range: [0.85, 1.15]
+        smooth_kernel_size: 5
+      apply_aug_probs:
+        p_gaussian_noise: 0.6
+        p_time_mask: 0.3
+        p_temporal_dropout: 0.3
+        p_feature_mask: 0.2
+        p_time_jitter: 0.4
+        p_amplitude_scale: 0.4
+        p_smooth_signal: 0.3
+
+  HB:
+    search:
+      learning_rate: [7.0e-5]
+      dropout: [8.0e-5]
+      weight_decay: [0.1]
+    training:
+      learning_rate: 7.0e-5
+      dropout: 8.0e-5
+      weight_decay: 0.1
+      batch_size: 16
+      num_epochs: 250
+      patience: 40
+      warmup_epochs: 0
+      scheduler_factor: 0.5
+      fine_tune: true
+      reinit_classifier: true
+      freeze_encoder: false
+      fold_id_base: 1
+    augmentation:
+      train_aug_kwargs:
+        noise_std: 0.5
+        time_mask_ratio: 0.55
+        temporal_dropout_ratio: 0.55
+        feature_mask_ratio: 0.55
+        jitter_max_shift: 12
+        amp_scale_range: [0.85, 1.15]
+        smooth_kernel_size: 5
+      apply_aug_probs:
+        p_gaussian_noise: 0.6
+        p_time_mask: 0.3
+        p_temporal_dropout: 0.3
+        p_feature_mask: 0.2
+        p_time_jitter: 0.4
+        p_amplitude_scale: 0.4
+        p_smooth_signal: 0.3
+
+  BS:
+    search:
+      learning_rate: [1.0e-4]
+      dropout: [0.25]
+      weight_decay: [0.1]
+    training:
+      learning_rate: 1.0e-4
+      dropout: 0.25
+      weight_decay: 0.1
+      batch_size: 16
+      num_epochs: 250
+      patience: 30
+      warmup_epochs: 0
+      scheduler_factor: 0.5
+      fine_tune: true
+      reinit_classifier: true
+      freeze_encoder: false
+      fold_id_base: 1
+    augmentation:
+      train_aug_kwargs:
+        noise_std: 0.5
+        time_mask_ratio: 0.55
+        temporal_dropout_ratio: 0.55
+        feature_mask_ratio: 0.55
+        jitter_max_shift: 12
+        amp_scale_range: [0.85, 1.15]
+        smooth_kernel_size: 5
+      apply_aug_probs:
+        p_gaussian_noise: 0.6
+        p_time_mask: 0.3
+        p_temporal_dropout: 0.3
+        p_feature_mask: 0.2
+        p_time_jitter: 0.4
+        p_amplitude_scale: 0.4
+        p_smooth_signal: 0.3

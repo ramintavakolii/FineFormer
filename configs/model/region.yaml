@@ -1,0 +1,11 @@
+# Region Transformer
+name: region
+notebook_type: region_transformer
+n_rois: 118
+n_timesteps: 142
+d_model: 96
+n_heads: 4
+n_layers: 4
+n_classes: 2
+dropout: 0.05
+type: region_transformer

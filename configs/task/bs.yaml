@@ -1,0 +1,6 @@
+# Bipolar vs Schizophrenia
+name: BS
+task_type: bipolar_vs_schizo
+class_names:
+  - Bipolar
+  - Schizophrenia

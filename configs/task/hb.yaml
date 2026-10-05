@@ -1,0 +1,6 @@
+# Healthy vs Bipolar
+name: HB
+task_type: healthy_vs_bipolar
+class_names:
+  - Bipolar
+  - Healthy

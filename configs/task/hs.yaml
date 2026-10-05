@@ -1,0 +1,6 @@
+# Healthy vs Schizophrenia
+name: HS
+task_type: healthy_vs_schizo
+class_names:
+  - Schizophrenia
+  - Healthy

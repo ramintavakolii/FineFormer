@@ -1,0 +1,59 @@
+# Default Hydra config. Task/cycle/model compose into a single training namespace.
+# Effective values are printed before each run (see main.py).
+
+defaults:
+  - model: region
+  - task: hs
+  - cycle: region/cycle_1
+  - _self_
+
+# --- data (single source of truth for paths) ---
+data:
+  dataset_path: ${oc.env:FMRI_DATA_PATH,./Data}
+  fold_indices_path: ${oc.env:FMRI_FOLD_PATH,./results/fold_indices/all_fold_indices.pkl}
+  fold_random_state: 40
+  n_splits: 5
+  # false for real experiments. true only via CLI --synthetic (never auto-inferred).
+  use_synthetic: false
+
+# --- output ---
+output:
+  results_root: ./results
+
+# --- reproducibility ---
+# null = historical-like (notebooks did not globally seed all RNGs)
+# set an int for reproducible mode
+seed: null
+deterministic: false
+
+# --- run control ---
+run:
+  # null = all folds; or e.g. [0] for one fold (0-based fold index into KFold)
+  folds: null
+  # if true, iterate search grids from task+cycle; else use training.* singles
+  hyperparam_search: ture
+
+# Device
+device: cuda
+
+# Optional CLI override slots. Only non-null keys merge into the resolved
+# cycle.tasks[TASK] block (see main.resolve_effective_run).
+# Example: training.learning_rate=1e-3 training.num_epochs=2
+training:
+  learning_rate: null
+  dropout: null
+  weight_decay: null
+  batch_size: null
+  num_epochs: null
+  patience: null
+  warmup_epochs: null
+  scheduler_factor: null
+  fine_tune: null
+  reinit_classifier: null
+  freeze_encoder: null
+  fold_id_base: 1
+search:
+  learning_rate: null
+  dropout: null
+  weight_decay: null
+augmentation: {}
