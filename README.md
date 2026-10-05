@@ -1,26 +1,9 @@
 
+---
+
 # 🧠 **FineFormer**
 
 ## *Transformer-Based Differential Diagnosis of Bipolar Disorder and Schizophrenia from rs-fMRI*
-
-<p align="center">
-  <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white">
-  </a>
-  <a href="https://pytorch.org/">
-    <img src="https://img.shields.io/badge/PyTorch-2.0+-red?logo=pytorch&logoColor=white">
-  </a>
-  <a href="https://numpy.org/">
-    <img src="https://img.shields.io/badge/NumPy-Latest-blue?logo=numpy&logoColor=white">
-  </a>
-  <a href="https://scipy.org/">
-    <img src="https://img.shields.io/badge/SciPy-Latest-lightgrey?logo=scipy">
-  </a>
-  <a href="https://scikit-learn.org/">
-    <img src="https://img.shields.io/badge/scikit--learn-Latest-orange?logo=scikit-learn">
-  </a>
-</p>
-
 
 ---
 
@@ -31,92 +14,27 @@ This repository provides the official implementation of **FineFormer**, a Transf
 The proposed approach integrates:
 
 * **Attention-based Transformer architectures**
-* A **cyclic transfer learning strategy**
+* A **cyclic sequential transfer learning strategy**
 
-to address two fundamental challenges in psychiatric neuroimaging:
+### 🎯 Motivation
 
-1. **Limited availability of labeled rs-fMRI data**
-2. **Substantial clinical and neurobiological overlap between SZ and BD**
+Schizophrenia and Bipolar Disorder frequently present overlapping symptoms—particularly during manic or psychotic episodes—making accurate differential diagnosis based solely on clinical assessments highly challenging. While rs-fMRI provides a non-invasive window into intrinsic brain dynamics, its application is hindered by high dimensionality, temporal complexity, and severe data scarcity.
 
-### Framework Objectives
-
-The framework is designed to:
-
-* Learn compact **spatiotemporal representations** of whole-brain rs-fMRI signals
-* Leverage **self-attention mechanisms** for interpretability
-* Improve generalization via **sequential knowledge transfer** across related diagnostic tasks
+This work addresses these challenges through compact, task-aware Transformer architectures and a cyclic knowledge-transfer protocol that prevents local minima and maximizes representation learning across limited neuroimaging datasets.
 
 ---
 
-## 🎯 Motivation
+## 📊 Dataset & Input Representation
 
-Schizophrenia and Bipolar Disorder frequently present overlapping symptoms—particularly during manic or psychotic episodes—making accurate differential diagnosis based solely on clinical assessments highly challenging. Misdiagnosis can result in inappropriate treatment strategies and adverse patient outcomes.
+Experiments were conducted using two publicly available neuroimaging datasets: **UCLA Consortium for Neuropsychiatric Phenomics (CNP)** and **COBRE**.
 
-While **resting-state fMRI** provides a non-invasive window into intrinsic brain dynamics and functional connectivity, its application is hindered by:
+| Group | Count |
+| --- | --- |
+| Healthy Controls (HC) | 139 |
+| Schizophrenia (SZ) | 120 |
+| Bipolar Disorder (BD) | 49 |
 
-* High dimensionality
-* Temporal complexity
-* Limited sample sizes
-
-This work addresses these challenges through:
-
-* Compact and task-aware Transformer architectures
-* Cyclic and sequential transfer learning
-* Neuroimaging-specific data augmentation strategies
-* Rigorous cross-validation protocols to prevent data leakage
-
----
-
-## 📊 Dataset Description
-
-Experiments were conducted using two publicly available neuroimaging datasets:
-
-* **UCLA Consortium for Neuropsychiatric Phenomics**
-* **COBRE (Center for Biomedical Research Excellence)**
-
-### 🧩 Participants
-
-A total of **308 subjects** were included:
-
-| Group                 | Count |
-| --------------------- | ----: |
-| Healthy Controls (HC) |   139 |
-| Schizophrenia (SZ)    |   120 |
-| Bipolar Disorder (BD) |    49 |
-
----
-
-### 🧠 Input Representation
-
-Each subject is represented by a **spatiotemporal matrix** of size:
-
-```
-(T × R) = 142 × 118
-```
-
-where:
-
-* 🕒 **T = 142** time points (TRs)
-* 🧠 **R = 118** brain regions of interest (ROIs)
-
-Each time point is treated as a **token encoding whole-brain activity**, enabling attention-based modeling of long-range dependencies.
-
----
-
-## 🧪 Classification Tasks
-
-The diagnostic problem is decomposed into three binary classification tasks:
-
-|  Task  | Description                          |
-| :----: | ------------------------------------ |
-| **HS** | Healthy Control vs. Schizophrenia    |
-| **HB** | Healthy Control vs. Bipolar Disorder |
-| **BS** | Bipolar Disorder vs. Schizophrenia   |
-
-**Label convention (used consistently):**
-
-* `0` → patient group
-* `1` → control or comparison group
+Each subject is represented by a **spatiotemporal matrix** of size `(T × R) = 142 × 118`, where `T = 142` time points (TRs) and `R = 118` brain regions of interest (ROIs). Each time point is treated as a token encoding whole-brain activity, enabling attention-based modeling of long-range dependencies without global standardizations that risk data leakage.
 
 ---
 
@@ -124,135 +42,126 @@ The diagnostic problem is decomposed into three binary classification tasks:
 
 Three Transformer-based architectures are investigated:
 
-### ⏱️ 1. Time-Transformer
-
-* Models **temporal dependencies** across the rs-fMRI time series
-* Sequence length corresponds to time points
-* Tokens encode whole-brain ROI activity
-
-### 🌐 2. Region-Transformer
-
-* Models **spatial dependencies** between brain regions
-* Sequence length corresponds to ROIs
-* Tokens encode temporal activity patterns per region
-
-### 🔀 3. Hybrid-Transformer
-
-* Sequentially combines:
-
-  1. Temporal Transformer layers
-  2. Region-based Transformer layers
-* Enables joint modeling of **temporal dynamics** and **spatial connectivity**
-
-All models employ multi-head self-attention, residual connections, layer normalization, and GELU activations.
+1. **Temporal Transformer:** Models dynamic sequence evolution across the rs-fMRI time series.
+2. **Spatial (Region) Transformer:** Models static, distributed inter-regional connectivity.
+3. **Hybrid-Transformer:** Sequentially combines Temporal and Spatial layers to jointly model spatiotemporal interplay.
 
 ---
 
-## 🔁 Training Strategy: Cyclic Transfer Learning
+## 🔁 Cyclic Transfer Learning Strategy
 
-To mitigate data scarcity and enhance representation learning, a **cyclic sequential transfer learning strategy** is adopted.
+The diagnostic problem is decomposed into three binary classification tasks (`0` = Patient, `1` = Control/Comparison):
 
-### 🔄 Training Procedure
+* **HS:** Healthy Control vs. Schizophrenia
+* **HB:** Healthy Control vs. Bipolar Disorder
+* **BS:** Bipolar Disorder vs. Schizophrenia
 
-1. Train the model on **HS (HC vs. SZ)**
-2. Transfer encoder weights and retrain on **HB (HC vs. BD)**
-3. Transfer encoder weights and retrain on **BS (BD vs. SZ)**
-4. Repeat the entire cycle **twice**
-
-During transfer:
-
-* The Transformer encoder is preserved
-* The classification head may be reinitialized
-* Encoder freezing and fine-tuning are configurable
-
-This cyclic exposure enables the encoder to learn increasingly **general and task-agnostic rs-fMRI representations**.
+To mitigate data scarcity, the model utilizes a **cyclic sequential transfer learning strategy**. Shared encoder weights are sequentially transferred across the tasks (HS → HB → BS), while the task-specific classification head is reinitialized. The entire cycle is repeated twice to enforce generalized, task-agnostic rs-fMRI representation learning.
 
 ---
 
-### 📐 Training Workflow Illustration
+## ⚙️ Repository Structure & Setup
 
-<p align="center">
-  <img src="figures/training_strategy.png" width="80%">
-</p>
+The codebase is highly modularized, strictly isolating architecture logic from execution orchestration using Hydra configuration management.
 
-**Figure:** Cyclic transfer learning strategy across HS, HB, and BS diagnostic tasks.
+```text
+paper_code/
+├── configs/          # Hydra YAML configs (model, cycle, task parameters)
+├── Data/             # Target directory for local fMRI datasets
+├── figures/          
+├── results/          # Auto-generated checkpoints, attention weights, and metrics
+├── scripts/          # Execution scripts (parity checks, visualizers)
+├── src/              # Core modules (data, models, cyclic training loops)
+└── main.py           # Unified CLI entry point
 
----
+```
 
-## 🧪 Cross-Validation and Evaluation
+### Installation
 
-* **5-fold cross-validation** with fixed subject splits
-* Identical folds used across all tasks to prevent data leakage
-* Early stopping based on validation accuracy
-* Final results reported as the mean across folds
+```bash
+git clone https://github.com/ramintavakolii/FineFormer.git
+cd FineFormer
 
-### 📊 Evaluation Metrics
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 
-* Accuracy (ACC)
-* Sensitivity (Sens)
-* Specificity (Spec)
-* Negative Predictive Value (NPV)
-* Area Under the ROC Curve (AUC)
-* Precision (Prec)
-* F1-score (F1)
+```
 
----
+### Data Configuration
 
-## 📈 Results
+By default, the pipeline expects data in `./Data`. Point the environment variable to your dataset before training:
 
-### Table 1. Performance of Transformer-Based Models (Iteration 2)
+```bash
+export FMRI_DATA_PATH="$(pwd)/Data"
 
-| Model  | Task | ACC       | Sens      | Spec      | NPV       | AUC       | Prec      | F1        |
-| ------ | ---- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
-| Time   | HS   | **0.884** | 0.833     | **0.928** | **0.911** | 0.860     | **0.911** | 0.870     |
-| Region | HS   | 0.780     | 0.742     | 0.814     | 0.789     | 0.737     | 0.787     | 0.756     |
-| Hybrid | HS   | **0.884** | **0.867** | 0.900     | 0.888     | **0.881** | 0.888     | **0.874** |
-| Time   | HB   | **0.900** | 0.698     | **0.971** | 0.903     | 0.784     | 0.898     | 0.773     |
-| Region | HB   | 0.857     | 0.573     | 0.957     | 0.867     | 0.756     | 0.867     | 0.663     |
-| Hybrid | HB   | 0.899     | **0.738** | 0.957     | **0.914** | **0.820** | **0.900** | **0.790** |
-| Time   | BS   | **0.923** | **1.000** | 0.739     | **1.000** | 0.850     | 0.904     | **0.950** |
-| Region | BS   | 0.870     | 0.983     | 0.591     | 0.949     | 0.718     | 0.858     | 0.916     |
-| Hybrid | BS   | 0.911     | 0.942     | **0.839** | 0.862     | **0.854** | **0.936** | 0.938     |
+```
 
 ---
 
----
+## 🚀 Training Pipeline
 
-### 🔍 Key Observations
+### 1. Verification
 
-* The **Hybrid-Transformer** achieves the most balanced performance across tasks
-* In the challenging **BS task**, both Time and Hybrid models exceed **90% accuracy**
-* The **Time-Transformer** achieves **perfect sensitivity (1.00)** for distinguishing BD from SZ
+Before full training, run the parity check to ensure the modular pipeline perfectly matches the paper's mathematical definitions and tensor shapes:
 
----
+```bash
+python scripts/parity_check.py
 
-## 🔎 Interpretability
+```
 
-FineFormer supports **attention weight extraction** at the subject level:
+### 2. Cyclic Execution
 
-* Attention maps across time or ROIs
-* Identification of salient temporal segments or brain regions
-* Facilitates neurobiological interpretation of model decisions
+Execute the tasks in strict order. The `cyclic_manager.py` handles encoder transfer and classifier reinitialization automatically.
 
----
+**Cycle 1:**
 
-## ♻️ Reproducibility
+```bash
+python main.py --model hybrid --task HS --cycle 1
+python main.py --model hybrid --task HB --cycle 1
+python main.py --model hybrid --task BS --cycle 1
 
-The repository includes:
+```
 
-* Fixed cross-validation fold indices
-* Saved model checkpoints
-* Training histories
-* Per-fold and aggregated metrics
-* Attention weight files
+**Cycle 2:**
 
-All experiments are fully reproducible given identical preprocessing and fold definitions.
+```bash
+python main.py --model hybrid --task HS --cycle 2
+python main.py --model hybrid --task HB --cycle 2
+python main.py --model hybrid --task BS --cycle 2
+
+```
+
+*(Swap `--model hybrid` for `--model time` or `--model region` to evaluate other architectures).*
+
+### 3. Hyperparameter Overrides & Grid Search
+
+Override specific YAML parameters via the CLI, or trigger an automated grid search based on the predefined ranges in `configs/cycle/`:
+
+```bash
+python main.py --model hybrid --task HS --cycle 1 --lr 2e-4 --dropout 0.15
+python main.py --model hybrid --task HS --cycle 1 --hyperparam-search
+
+```
+
+### 4. Visualization & Interpretability
+
+FineFormer supports attention weight extraction for neurobiological interpretation. To visualize training curves and bar charts after a run:
+
+```bash
+python scripts/visualize_results.py \
+  --result-path ./results/hybrid/cycle_1/hs \
+  --summary-name cv_summary_healthy_vs_schizo.pt \
+  --save
+
+```
 
 ---
 
 ## 📚 Citation
 
-If you use this code, please cite the associated paper:
+If you use this code or framework in your research, please cite the associated paper:
 
 ```bibtex
 @article{FineFormer2025,
@@ -261,5 +170,5 @@ If you use this code, please cite the associated paper:
   journal = {...},
   year    = {2025}
 }
-```
 
+```
