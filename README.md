@@ -46,6 +46,10 @@ Three Transformer-based architectures are investigated:
 2. **Spatial (Region) Transformer:** Models static, distributed inter-regional connectivity.
 3. **Hybrid-Transformer:** Sequentially combines Temporal and Spatial layers to jointly model spatiotemporal interplay.
 
+<p align="center">
+  <img src="figures/model_arch.svg" width="100%" alt="FineFormer Model Architectures">
+</p>
+
 ---
 
 ## 🔁 Cyclic Transfer Learning Strategy
@@ -57,6 +61,10 @@ The diagnostic problem is decomposed into three binary classification tasks (`0`
 * **BS:** Bipolar Disorder vs. Schizophrenia
 
 To mitigate data scarcity, the model utilizes a **cyclic sequential transfer learning strategy**. Shared encoder weights are sequentially transferred across the tasks (HS → HB → BS), while the task-specific classification head is reinitialized. The entire cycle is repeated twice to enforce generalized, task-agnostic rs-fMRI representation learning.
+
+<p align="center">
+  <img src="figures/Training_Workflow_Illustration.png" width="80%" alt="Cyclic Training Workflow">
+</p>
 
 ---
 
